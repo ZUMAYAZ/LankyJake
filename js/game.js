@@ -13,6 +13,7 @@ window.onload = function() {
     game.load.image('bg1', 'assets/Backround1.jpg');
     game.load.image('bg2', 'assets/Backround2.jpg');
     game.load.image('bg3', 'assets/Backround3.jpg');
+    game.load.image('Jake', 'assets/LankyJake.png');
 
   }
   //End of the preload function
@@ -30,6 +31,22 @@ window.onload = function() {
     bg3 = game.add.sprite(game.world.width*2, 0,'bg3');
     bg3.width = game.world.width;
     bg3.height = game.world.height;
+
+
+    //Add the player to the game world
+    player = game.add.sprite(game.world.width/2, game.world.height - 75, 'player');
+    player.anchor.setTo(0.5,0.5);
+    player.scale.setTo(0.2,0.2);
+    game.physics.arcade.enable(player);
+    player.body.collideWorldBounds = true
+    controls = game.input.keyboard.addKeys(
+      {
+        'Jump': Phaser.KeyCode.SPACEBAR,
+      }
+      );
+     //Add the score and lifes text into the game 
+      scoreText = game.add.text(16,game.world.height-50,'Score: ' + score, {fill:'yellow'});
+      livesText = game.add.text(700,game.world.height-50,'Lives: ' + lives, {fill:'red'});
 
   }
   //End of the create function
