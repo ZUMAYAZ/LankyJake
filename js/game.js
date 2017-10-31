@@ -7,10 +7,12 @@ window.onload = function() {
  var bg1;
  var bg2;
  var bg3;
+ var score = 0;
+ var lives = 1;
 
   //Preload function, Where we can load all the assets that will be used in our game
   function preload() {
-    game.load.image('bg1', 'assets/Backround1.jpg');
+    game.load.image('bg1', 'assets/Treehouse.png');
     game.load.image('bg2', 'assets/Backround2.jpg');
     game.load.image('bg3', 'assets/Backround3.jpg');
     game.load.image('Jake', 'assets/LankyJake.png');
@@ -34,9 +36,9 @@ window.onload = function() {
 
 
     //Add the player to the game world
-    player = game.add.sprite(game.world.width/2, game.world.height - 75, 'player');
+    player = game.add.sprite(game.world.width/9, game.world.height - 150, 'Jake');
     player.anchor.setTo(0.5,0.5);
-    player.scale.setTo(0.2,0.2);
+    player.scale.setTo(0.3,0.3);
     game.physics.arcade.enable(player);
     player.body.collideWorldBounds = true
     controls = game.input.keyboard.addKeys(
@@ -44,9 +46,9 @@ window.onload = function() {
         'Jump': Phaser.KeyCode.SPACEBAR,
       }
       );
-     //Add the score and lifes text into the game 
-      scoreText = game.add.text(16,game.world.height-50,'Score: ' + score, {fill:'yellow'});
-      livesText = game.add.text(700,game.world.height-50,'Lives: ' + lives, {fill:'red'});
+     //Add the score and lifes text into the game
+      scoreText = game.add.text(620,game.world.height-50,'Score: ' + score, {fill:'yellow'});
+      livesText = game.add.text(16,game.world.height-50,'Lives: ' + lives, {fill:'red'});
 
   }
   //End of the create function
@@ -75,6 +77,10 @@ window.onload = function() {
      //  Move it just to the right of the screen
      bg3.x = game.world.width*2;
     }
+
+    //Score system
+    score++;
+    scoreText.text = "Score: " + score;
   }
   //End of the update function
 };
