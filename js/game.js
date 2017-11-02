@@ -13,7 +13,7 @@ window.onload = function() {
   //Preload function, Where we can load all the assets that will be used in our game
   function preload() {
     game.load.image('bg1', 'assets/Treehouse.png');
-    game.load.image('bg2', 'assets/Backround2.jpg');
+    game.load.image('bg2', 'assets/MountainVillage.png');
     game.load.image('bg3', 'assets/Backround3.jpg');
     game.load.image('Jake', 'assets/LankyJake.png');
 
