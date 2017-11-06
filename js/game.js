@@ -28,6 +28,10 @@ window.onload = function() {
 
   //Create function, where all the initial objects are created
   function create() {
+
+    //Enable arcade physics inthe game world
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
     //The first background is placed on the screen
     bg1 = game.add.sprite(0, 0,'bg1');
     bg1.width = game.world.width;
@@ -46,8 +50,8 @@ window.onload = function() {
     var ledge = platforms.create(400, 450, 'EarthPlat');
     ledge.scale.setTo(5,2);
     ledge.body.immovable = true;
-    var ledge = platforms.create(800, 400, 'EarthPlat');
-    ledge.scale.setTo(3,1.5);
+    var ledge = platforms.create(800, 400, 'SnowPlat');
+    ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
     //Add the sprite sheet for the player
     //character = game.add.sprite(50, game.world.height-75, 'dude');
@@ -88,7 +92,7 @@ window.onload = function() {
   function update() {
 
     //Collision events
-    //game.physics.arcade.collide(player,platforms);
+    game.physics.arcade.collide(player, platforms);
 
     //Each frame, both backgrounds move 1 pixel left
     bg1.x--;
