@@ -53,10 +53,10 @@ window.onload = function() {
     var ledge = platforms.create(800, 400, 'SnowPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    //Add the sprite sheet for the player
-    //character = game.add.sprite(50, game.world.height-75, 'dude');
-    //character.animations.add('right', [,,,], 10, true);
-    //character.animations.play('right');
+    var ledge = platforms.create(1600, 400, 'CandyPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+
 
 
     //Add the player to the game world
