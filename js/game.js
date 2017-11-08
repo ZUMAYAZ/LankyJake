@@ -8,7 +8,7 @@ window.onload = function() {
  var bg2;
  var bg3;
  var score = 0;
- var lives = 1;
+ var best = score;
  var controls;
  var platforms;
 
@@ -47,17 +47,27 @@ window.onload = function() {
     platforms = game.add.group();
     platforms.enableBody = true;
 
-    var ledge = platforms.create(400, 450, 'EarthPlat');
-    ledge.scale.setTo(5,2);
+    //Adding the platforms in the world
+    var ledge = platforms.create(30, 475, 'EarthPlat');
+    ledge.scale.setTo(5,3);
     ledge.body.immovable = true;
-    var ledge = platforms.create(800, 400, 'SnowPlat');
+    var ledge = platforms.create(260, 480, 'EarthPlat');
+    ledge.scale.setTo(5,3);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(450, 450, 'EarthPlat');
+    ledge.scale.setTo(5,3);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(645, 420, 'EarthPlat');
+    ledge.scale.setTo(5,3);
+    ledge.body.immovable = true;
+
+    var ledge = platforms.create(820, 400, 'SnowPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
+
     var ledge = platforms.create(1600, 400, 'CandyPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-
-
 
     //Add the player to the game world
     player = game.add.sprite(game.world.width/9, game.world.height - 150, 'Jake');
@@ -66,7 +76,7 @@ window.onload = function() {
     player.animations.add('right', [0,1,2], 7, true);
     //player.animations.add('die', [8,9,10,11], 10, false);
     game.physics.arcade.enable(player);
-    player.body.gravity.y= 100;
+    player.body.gravity.y= 1000;
     player.body.collideWorldBounds = true
 
     //TODO: Move these lines into update
@@ -81,10 +91,9 @@ window.onload = function() {
       }
       );
      //Add the score and lifes text into the game
-      scoreText = game.add.text(620,game.world.height-50,'Score: ' + score, {fill:'yellow'});
-      livesText = game.add.text(16,game.world.height-50,'Lives: ' + lives, {fill:'red'});
+      scoreText = game.add.text(10,game.world.height-595,'Score: ' + score, {fill:'white'});
+      bestText = game.add.text(10,game.world.height-565,'Best: ' + score, {fill:'yellow'});
 
-      //game.add.sprite(0,0,'Jake');
   }
   //End of the create function
 
@@ -120,8 +129,10 @@ window.onload = function() {
 
     //Makes the controls work
     if(controls.Jump1.justDown || controls.Jump2.justDown){
-      console.log("jumping");
-      player.body.velocity.y = -50;
+      //if(player.body.touching.down){
+        console.log("jumping");
+        player.body.velocity.y = -510;
+      //}
     }
 
     //Score system
