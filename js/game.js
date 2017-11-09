@@ -15,9 +15,9 @@ window.onload = function() {
   //Preload function, Where we can load all the assets that will be used in our game
   function preload() {
     game.load.image('bg1', 'assets/Treehouse.png');
-    game.load.image('bg2', 'assets/MountainVillage.png');
+    game.load.image('bg2', 'assets/MountainVillage.jpg');
     game.load.image('bg3', 'assets/Backround3.jpg');
-    game.load.spritesheet('Jake', 'assets/LankyJake.png',21,29);
+    game.load.spritesheet('Jake', 'assets/LankyJake.png',32,37);
     game.load.image('Evilguy', 'assets/Evil monster.png');
     game.load.image('SnowPlat', 'assets/Mountain Plat.png');
     game.load.image('EarthPlat', 'assets/TreehousePlat.png');
@@ -60,20 +60,44 @@ window.onload = function() {
     var ledge = platforms.create(645, 420, 'EarthPlat');
     ledge.scale.setTo(5,3);
     ledge.body.immovable = true;
-
+    //Adding snow platforms into the world
     var ledge = platforms.create(820, 400, 'SnowPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-
-    var ledge = platforms.create(1600, 400, 'CandyPlat');
+    var ledge = platforms.create(1050, 430, 'SnowPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(1100, 430, 'SnowPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(1300, 400, 'SnowPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(1400, 400, 'SnowPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+    //Adding the candy platforms
+    var ledge = platforms.create(1600, 380, 'CandyPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(1800, 400, 'CandyPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(2000, 440, 'CandyPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(2100, 360, 'CandyPlat');
+    ledge.scale.setTo(5,5);
+    ledge.body.immovable = true;
+    var ledge = platforms.create(2250, 350, 'CandyPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
 
     //Add the player to the game world
     player = game.add.sprite(game.world.width/9, game.world.height - 150, 'Jake');
     player.anchor.setTo(0.5,0.5);
-    player.scale.setTo(2,2);
-    player.animations.add('right', [0,1,2], 7, true);
+    player.scale.setTo(1.5,1.5);
+    player.animations.add('right', [0,1,2,3,4,5,6,7], 10, true);
     //player.animations.add('die', [8,9,10,11], 10, false);
     game.physics.arcade.enable(player);
     player.body.gravity.y= 1000;
