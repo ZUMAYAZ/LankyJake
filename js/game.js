@@ -12,6 +12,12 @@ window.onload = function() {
  var controls;
  var platforms;
 
+ var platformsEarth;
+ var platformsSnow;
+ var platformsCandy;
+
+ var speed = 1;
+
   //Preload function, Where we can load all the assets that will be used in our game
   function preload() {
     game.load.image('bg1', 'assets/Treehouse.png');
@@ -22,6 +28,7 @@ window.onload = function() {
     game.load.image('SnowPlat', 'assets/Mountain Plat.png');
     game.load.image('EarthPlat', 'assets/TreehousePlat.png');
     game.load.image('CandyPlat', 'assets/CupCake Plat.png');
+    game.load.image('Powerup', 'assets/Coin.png');
 
   }
   //End of the preload function
@@ -44,52 +51,58 @@ window.onload = function() {
     bg3.width = game.world.width;
     bg3.height = game.world.height;
 
-    platforms = game.add.group();
-    platforms.enableBody = true;
+    platformsEarth = game.add.group();
+    platformsEarth.enableBody = true;
+    platformsSnow = game.add.group();
+    platformsSnow.x= game.world.width;
+    platformsSnow.enableBody = true;
+    platformsCandy = game.add.group();
+    platformsCandy.enableBody = true;
+    platformsCandy.x= game.world.width*2;
 
     //Adding the platforms in the world
-    var ledge = platforms.create(30, 475, 'EarthPlat');
+    var ledge = platformsEarth.create(30, 475, 'EarthPlat');
     ledge.scale.setTo(5,3);
     ledge.body.immovable = true;
-    var ledge = platforms.create(260, 480, 'EarthPlat');
+    var ledge = platformsEarth.create(260, 480, 'EarthPlat');
     ledge.scale.setTo(5,3);
     ledge.body.immovable = true;
-    var ledge = platforms.create(450, 450, 'EarthPlat');
+    var ledge = platformsEarth.create(450, 450, 'EarthPlat');
     ledge.scale.setTo(5,3);
     ledge.body.immovable = true;
-    var ledge = platforms.create(645, 420, 'EarthPlat');
+    var ledge = platformsEarth.create(645, 420, 'EarthPlat');
     ledge.scale.setTo(5,3);
     ledge.body.immovable = true;
     //Adding snow platforms into the world
-    var ledge = platforms.create(820, 400, 'SnowPlat');
+    var ledge = platformsSnow.create(820-game.world.width, 400, 'SnowPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    var ledge = platforms.create(1050, 430, 'SnowPlat');
+    var ledge = platformsSnow.create(1050-game.world.width, 430, 'SnowPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    var ledge = platforms.create(1100, 430, 'SnowPlat');
+    var ledge = platformsSnow.create(1100-game.world.width, 430, 'SnowPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    var ledge = platforms.create(1300, 400, 'SnowPlat');
+    var ledge = platformsSnow.create(1300-game.world.width, 400, 'SnowPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    var ledge = platforms.create(1400, 400, 'SnowPlat');
+    var ledge = platformsSnow.create(1400-game.world.width, 400, 'SnowPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    //Adding the candy platforms
-    var ledge = platforms.create(1600, 380, 'CandyPlat');
+    //Adding the candy platforms to the world
+    var ledge = platformsCandy.create(1600-(game.world.width*2), 380, 'CandyPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    var ledge = platforms.create(1800, 400, 'CandyPlat');
+    var ledge = platformsCandy.create(1800-(game.world.width*2), 400, 'CandyPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    var ledge = platforms.create(2000, 440, 'CandyPlat');
+    var ledge = platformsCandy.create(2000-(game.world.width*2), 440, 'CandyPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    var ledge = platforms.create(2100, 360, 'CandyPlat');
+    var ledge = platformsCandy.create(2100-(game.world.width*2), 360, 'CandyPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
-    var ledge = platforms.create(2250, 350, 'CandyPlat');
+    var ledge = platformsCandy.create(2250-(game.world.width*2), 350, 'CandyPlat');
     ledge.scale.setTo(5,5);
     ledge.body.immovable = true;
 
@@ -125,13 +138,17 @@ window.onload = function() {
   function update() {
 
     //Collision events
-    game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collide(player, platformsEarth);
+    game.physics.arcade.collide(player, platformsSnow);
+    game.physics.arcade.collide(player, platformsCandy);
 
     //Each frame, both backgrounds move 1 pixel left
-    bg1.x--;
-    bg2.x--;
-    bg3.x--;
-    platforms.x--;
+    bg1.x -= speed;
+    bg2.x -= speed;
+    bg3.x -= speed;
+    platformsEarth.x -= speed;
+    platformsSnow.x -= speed;
+    platformsCandy.x -= speed;
 
     //If the first background is completely off the screen
     if(bg1.x < -game.world.width){
@@ -151,16 +168,39 @@ window.onload = function() {
      bg3.x = game.world.width*2;
     }
 
+    //If the first platform group is completely off the screen
+    if(platformsEarth.x < -game.world.width){
+     //  Move it just to the right of the screen
+     platformsEarth.x = game.world.width*2;
+    }
+
+    //If the second platform group is completely off the screen
+    if(platformsSnow.x < -game.world.width){
+     //  Move it just to the right of the screen
+     platformsSnow.x = game.world.width*2;
+    }
+
+    //If the third platform group is completely off the screen
+    if(platformsCandy.x < -game.world.width){
+     //  Move it just to the right of the screen
+     platformsCandy.x = game.world.width*2;
+    }
+
     //Makes the controls work
     if(controls.Jump1.justDown || controls.Jump2.justDown){
-      //if(player.body.touching.down){
+      if(player.body.touching.down){
         console.log("jumping");
         player.body.velocity.y = -510;
-      //}
+      }
     }
 
     //Score system
     score++;
+    if(score % 1000 == 0){ //Every 1000 points
+      if(speed < 5){
+        speed++;
+      }
+    }
     scoreText.text = "Score: " + score;
   }
   //End of the update function
