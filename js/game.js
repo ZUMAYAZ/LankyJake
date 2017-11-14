@@ -1,7 +1,7 @@
 window.onload = function() {
 
-  //Create a new phaser game, with dimensions of 800px wide and 600px
-  var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+ //Create a new phaser game, with dimensions of 800px wide and 600px
+ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
  //Global variables
  var bg1;
@@ -11,11 +11,9 @@ window.onload = function() {
  var best = score;
  var controls;
  var platforms;
-
  var platformsEarth;
  var platformsSnow;
  var platformsCandy;
-
  var speed = 1;
 
   //Preload function, Where we can load all the assets that will be used in our game
@@ -23,12 +21,16 @@ window.onload = function() {
     game.load.image('bg1', 'assets/Treehouse.png');
     game.load.image('bg2', 'assets/MountainVillage.jpg');
     game.load.image('bg3', 'assets/Backround3.jpg');
+    game.load.spritesheet('Evilguy', 'assets/Evil monster.png');
     game.load.spritesheet('Jake', 'assets/LankyJake.png',32,37);
+    game.load.spritesheet('DeadJake', 'assets/Death.png');
+    game.load.image('JackPower', 'assets/before powerup.png');
     game.load.image('Evilguy', 'assets/Evil monster.png');
     game.load.image('SnowPlat', 'assets/Mountain Plat.png');
     game.load.image('EarthPlat', 'assets/TreehousePlat.png');
     game.load.image('CandyPlat', 'assets/CupCake Plat.png');
     game.load.image('Powerup', 'assets/Coin.png');
+    game.load.image('GameOver', 'assets/Game Over.png');
 
   }
   //End of the preload function
@@ -204,5 +206,13 @@ window.onload = function() {
     scoreText.text = "Score: " + score;
   }
   //End of the update function
+
+  function gameOver(){
+    gg = game.add.sprite(game.world.width/2, game.world.height/2, 'gameover');
+    gg.anchor.setTo(0.5,0.5);
+    //player.kill();
+  }  
+  //End of gameover function
+
 };
 //End of code
