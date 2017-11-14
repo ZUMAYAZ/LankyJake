@@ -1,2 +1,2 @@
 # LankyJake
-Josh is Bad! Do some work lol
+Will do something other than assests and talk to Hayden! LOL
