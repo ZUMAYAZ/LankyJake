@@ -15,13 +15,15 @@ window.onload = function() {
  var platformsSnow;
  var platformsCandy;
  var speed = 1;
+ var hiScore;
 
   //Preload function, Where we can load all the assets that will be used in our game
   function preload() {
     game.load.image('bg1', 'assets/Treehouse.png');
     game.load.image('bg2', 'assets/MountainVillage.jpg');
     game.load.image('bg3', 'assets/Backround3.jpg');
-    game.load.spritesheet('Evilguy', 'assets/Evil monster.png');
+    game.load.spritesheet('Test', 'assets/Test.png',8,9);
+    game.load.spritesheet('Evilguy', 'assets/Evil monster.png',12,27,2);
     game.load.spritesheet('Jake', 'assets/LankyJake.png',32,37);
     game.load.spritesheet('DeadJake', 'assets/Death.png');
     game.load.image('JackPower', 'assets/before powerup.png');
@@ -37,7 +39,10 @@ window.onload = function() {
 
   //Create function, where all the initial objects are created
   function create() {
-
+      hiScore = localStorage.getItem('jakeHiScore');
+      if(hiScore == null){
+        hiScore = 0;
+      }
     //Enable arcade physics inthe game world
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -123,22 +128,34 @@ window.onload = function() {
     //player.animations.stop();
     //player.frame = 4; //Standing frame
 
+    //Add the Evilguy to the game world
+    player2 = game.add.sprite(game.world.width/9, game.world.height - 150, 'Test');
+    //player2 = game.add.sprite(0,0, 'Evilguy');
+    //player2.anchor.setTo(0.5,0.5);
+    //player2.scale.setTo(2,2);
+    //player2.frame= 0;
+    player2.animations.add('right2', [0,1], 5, true);
+    player2.animations.play('right2');
+
     controls = game.input.keyboard.addKeys(
       {
         'Jump1': Phaser.KeyCode.SPACEBAR,
-        'Jump2': Phaser.KeyCode.UP
+        'Jump2': Phaser.KeyCode.UP,
+        'Die' : Phaser.KeyCode.T
       }
       );
      //Add the score and lifes text into the game
       scoreText = game.add.text(10,game.world.height-595,'Score: ' + score, {fill:'white'});
-      bestText = game.add.text(10,game.world.height-565,'Best: ' + score, {fill:'yellow'});
+      bestText = game.add.text(10,game.world.height-565,'Best: ' + hiScore, {fill:'yellow'});
 
   }
   //End of the create function
 
   //Update function runs each and every frame
   function update() {
-
+    if(player.y > game.world.height-100){
+      gameOver();
+    }
     //Collision events
     game.physics.arcade.collide(player, platformsEarth);
     game.physics.arcade.collide(player, platformsSnow);
@@ -151,6 +168,10 @@ window.onload = function() {
     platformsEarth.x -= speed;
     platformsSnow.x -= speed;
     platformsCandy.x -= speed;
+
+    if(controls.Die.isDown) {
+      gameOver();
+    }
 
     //If the first background is completely off the screen
     if(bg1.x < -game.world.width){
@@ -210,8 +231,13 @@ window.onload = function() {
   function gameOver(){
     gg = game.add.sprite(game.world.width/2, game.world.height/2, 'gameover');
     gg.anchor.setTo(0.5,0.5);
+    if(localStorage.getItem('jakeHiScore') === null){
+      localStorage.setItem('jakeHiScore',score);
+    } else if(score > localStorage.getItem('jakeHiScore')) {
+      localStorage.setItem('jakeHiScore',score);
+    }
     //player.kill();
-  }  
+  }
   //End of gameover function
 
 };
