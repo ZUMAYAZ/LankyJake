@@ -1,6 +1,6 @@
 window.onload = function() {
 
-  alert("Welcome to lanky Jake were Jake is trying to run away from a evil monster that will eat him up. to play you just need to jump. UP arrow and SPACEBAR can be used to jump, Have fun. Oh and to play again just refresh your tab")
+  alert("Welcome to LankyJake. A game were Jake is trying to run away from a evil monster by the name of Evil Monster. you must (key word MUST) help Jake jump on the platforms. The Evil Monster has crumbeled the planet and only left platforms. To help Jake jump press SPACEBAR/UPARROW to replay refresh that tab.GOODLUCK")
 
  //Create a new phaser game, with dimensions of 800px wide and 600px
  var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
@@ -246,6 +246,7 @@ var Powerup;
     gg.scale.setTo(1,1);
     dead = game.add.sprite(player.x,player.y,'DeadJake');
     player.kill();
+    game.paused = true;
     //dead.animations.add('die',[0,1,2,3,4,5,6,7],10,false);
     //dead.animations.play('die');
 
@@ -261,9 +262,11 @@ var Powerup;
   function CollectPowerUp(player,pup){
     console.log('collected');
     //TODO: Add animation to collect item
+    game.add.sprite('JakePower')
     pup.kill();
     //TODO: Add animation to fly
-    player.y-= 400;
+    player.x+= 50;
+    //delay(1000);
   }
 
 };
