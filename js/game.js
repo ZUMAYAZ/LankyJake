@@ -1,5 +1,7 @@
 window.onload = function() {
 
+  alert("Welcome to lanky Jake were Jake is trying to run away from a evil monster that will eat him up. to play you just need to jump. UP arrow and SPACEBAR can be used to jump, Have fun. Oh and to play again just refresh your tab")
+
  //Create a new phaser game, with dimensions of 800px wide and 600px
  var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
@@ -16,18 +18,19 @@ window.onload = function() {
  var platformsCandy;
  var speed = 1;
  var hiScore;
+var coin;
+var Powerup;
 
   //Preload function, Where we can load all the assets that will be used in our game
   function preload() {
     game.load.image('bg1', 'assets/Treehouse.png');
     game.load.image('bg2', 'assets/MountainVillage.jpg');
-    game.load.image('bg3', 'assets/Backround3.jpg');
-    game.load.spritesheet('Test', 'assets/Test.png',8,9);
-    game.load.spritesheet('Evilguy', 'assets/Evil monster.png',12,27,2);
+    game.load.image('bg3', 'assets/Candy Kingdom.png');
+    game.load.spritesheet('Evilguy', 'assets/Evil monster.png',30,27);
     game.load.spritesheet('Jake', 'assets/LankyJake.png',32,37);
-    game.load.spritesheet('DeadJake', 'assets/Death.png');
+    game.load.spritesheet('JakeSheet', 'assets/LankyJake_spritesheet.png',32,37);
+    game.load.spritesheet('DeadJake', 'assets/Death.png',32,37);
     game.load.image('JackPower', 'assets/before powerup.png');
-    game.load.image('Evilguy', 'assets/Evil monster.png');
     game.load.image('SnowPlat', 'assets/Mountain Plat.png');
     game.load.image('EarthPlat', 'assets/TreehousePlat.png');
     game.load.image('CandyPlat', 'assets/CupCake Plat.png');
@@ -114,27 +117,21 @@ window.onload = function() {
     ledge.body.immovable = true;
 
     //Add the player to the game world
-    player = game.add.sprite(game.world.width/9, game.world.height - 150, 'Jake');
+    player = game.add.sprite(game.world.width/5, game.world.height - 150, 'Jake');
     player.anchor.setTo(0.5,0.5);
     player.scale.setTo(1.5,1.5);
     player.animations.add('right', [0,1,2,3,4,5,6,7], 10, true);
-    //player.animations.add('die', [8,9,10,11], 10, false);
+    //player.animations.add('die', [8,9,10,11,12,13,14,15], 10, false);
     game.physics.arcade.enable(player);
     player.body.gravity.y= 1000;
     player.body.collideWorldBounds = true
-
-    //TODO: Move these lines into update
     player.animations.play('right');
-    //player.animations.stop();
-    //player.frame = 4; //Standing frame
 
     //Add the Evilguy to the game world
-    player2 = game.add.sprite(game.world.width/9, game.world.height - 150, 'Test');
-    //player2 = game.add.sprite(0,0, 'Evilguy');
-    //player2.anchor.setTo(0.5,0.5);
-    //player2.scale.setTo(2,2);
-    //player2.frame= 0;
-    player2.animations.add('right2', [0,1], 5, true);
+    player2 = game.add.sprite(game.world.width/15, game.world.height - 150, 'Evilguy');
+    player2.anchor.setTo(0.5,0.5);
+    player2.scale.setTo(3,3);
+    player2.animations.add('right2', [0,1,2], 5, true);
     player2.animations.play('right2');
 
     controls = game.input.keyboard.addKeys(
@@ -148,11 +145,24 @@ window.onload = function() {
       scoreText = game.add.text(10,game.world.height-595,'Score: ' + score, {fill:'white'});
       bestText = game.add.text(10,game.world.height-565,'Best: ' + hiScore, {fill:'yellow'});
 
+      Powerup = game.add.group();
+      Powerup.enableBody = true;
+
+      //Spawn a Powerup
+      var location = platformsSnow.getRandom();
+      coin = Powerup.create(location.x+game.world.width,location.y-25,'Powerup');
+      //Random number between location.x and location.x + location.width
+      //coin = game.add.sprite(location.x+game.world.width,location.y-25,'Powerup');
+
   }
   //End of the create function
 
   //Update function runs each and every frame
   function update() {
+
+    //player.animations.stop();
+    //player.frame = 4; //Standing frame
+
     if(player.y > game.world.height-100){
       gameOver();
     }
@@ -160,6 +170,7 @@ window.onload = function() {
     game.physics.arcade.collide(player, platformsEarth);
     game.physics.arcade.collide(player, platformsSnow);
     game.physics.arcade.collide(player, platformsCandy);
+    game.physics.arcade.collide(player, Powerup, CollectPowerUp);
 
     //Each frame, both backgrounds move 1 pixel left
     bg1.x -= speed;
@@ -168,6 +179,7 @@ window.onload = function() {
     platformsEarth.x -= speed;
     platformsSnow.x -= speed;
     platformsCandy.x -= speed;
+    coin.x-= speed;
 
     if(controls.Die.isDown) {
       gameOver();
@@ -219,8 +231,8 @@ window.onload = function() {
 
     //Score system
     score++;
-    if(score % 1000 == 0){ //Every 1000 points
-      if(speed < 5){
+    if(score % 1900 == 0){ //Every 1900 points
+      if(speed < 4){
         speed++;
       }
     }
@@ -229,16 +241,30 @@ window.onload = function() {
   //End of the update function
 
   function gameOver(){
-    gg = game.add.sprite(game.world.width/2, game.world.height/2, 'gameover');
+    gg = game.add.sprite(game.world.width/2, game.world.height/2, 'GameOver');
     gg.anchor.setTo(0.5,0.5);
+    gg.scale.setTo(1,1);
+    dead = game.add.sprite(player.x,player.y,'DeadJake');
+    player.kill();
+    //dead.animations.add('die',[0,1,2,3,4,5,6,7],10,false);
+    //dead.animations.play('die');
+
+    //game.paused = true;
     if(localStorage.getItem('jakeHiScore') === null){
       localStorage.setItem('jakeHiScore',score);
     } else if(score > localStorage.getItem('jakeHiScore')) {
       localStorage.setItem('jakeHiScore',score);
     }
-    //player.kill();
   }
   //End of gameover function
+
+  function CollectPowerUp(player,pup){
+    console.log('collected');
+    //TODO: Add animation to collect item
+    pup.kill();
+    //TODO: Add animation to fly
+    player.y-= 400;
+  }
 
 };
 //End of code
